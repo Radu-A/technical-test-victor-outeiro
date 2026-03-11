@@ -8,7 +8,7 @@ export const errorHandler = (
   next: NextFunction,
 ) => {
   // req.id comes from logger middleware
-  const reqId = (req as any).id || "no-id";
+  const reqId = res.locals.requestId || "no-id";
 
   console.error(`[${reqId}] DB Error:`, err.message);
 
