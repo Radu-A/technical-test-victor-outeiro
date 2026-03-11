@@ -1,10 +1,14 @@
 import { Router, Request, Response, NextFunction } from "express";
+
 import { pool } from "./db";
+
+import { validateUserSync } from "./middlewares/validator";
 
 const router = Router();
 
 router.post(
   "/sync/user",
+  validateUserSync,
   async (req: Request, res: Response, next: NextFunction) => {
     const { credential, email, name } = req.body;
 
