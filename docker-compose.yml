@@ -1,0 +1,19 @@
+services:
+  postgres:
+    # Light image of postgres
+    image: postgres:15-alpine
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: ${DB_USER:-user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-pass}
+      POSTGRES_DB: ${DB_NAME:-sync_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      # Connect container with local folder
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  # Volume that saves data from postgres_db
+  postgres_data:
