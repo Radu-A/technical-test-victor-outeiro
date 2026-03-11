@@ -1,9 +1,8 @@
-// middlewares/logger.ts
 import { Request, Response, NextFunction } from "express";
 import morgan from "morgan";
 import crypto from "crypto";
 
-// 1. Creamos y exportamos el inyector del Request ID
+// 1. Create and export addRequestId function
 export const addRequestId = (
   req: Request,
   res: Response,
@@ -15,12 +14,12 @@ export const addRequestId = (
   next();
 };
 
-// 2. Le enseñamos a Morgan a leer el Request ID
+// 2. Teach morgan to read request id
 morgan.token("id", (req: Request, res: Response) => {
   return res.locals.requestId as string;
 });
 
-// 3. Exportamos el middleware de Morgan ya configurado
+// 3. Export full setup middleware
 export const httpLogger = morgan(
   "[ReqID: :id] :method :url -> Status: :status | Latencia: :response-time ms",
 );

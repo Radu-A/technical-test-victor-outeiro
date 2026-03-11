@@ -28,8 +28,30 @@ router.post(
         user: result.rows[0],
       });
     } catch (error) {
-      // Delegamos el error al middleware global
+      // This error is for error handler middleware
       next(error);
+    }
+  },
+);
+
+router.get(
+  "/health",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // Verify that pool can connect to database
+      await pool.query("SELECT 1");
+
+      res.status(200).json({
+        status: "UP",
+        database: "connected",
+        timestamp: new Date().toISOString(),
+      });
+    } catch (error) {
+      // Health routes use to return a 503 error directly, with no error handler
+      res.status(503).json({
+        status: "DOWN",
+        database: "disconnected",
+      });
     }
   },
 );
